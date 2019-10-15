@@ -5,8 +5,7 @@ import styled from 'styled-components'
 
 import TodosContainer from './store'
 
-import TodoList from './components/TodoList'
-import AddTodo from './components/AddTodo'
+import TodoLists from './components/todolists/TodoLists'
 
 function App () {
   return (
@@ -14,11 +13,17 @@ function App () {
       <Wrapper>
         <Subscribe to={[TodosContainer]}>
           {todos => {
-            const list = todos.getList()
+            const lists = todos.getList()
             return (
               <TodosWrapper>
-                <AddTodo onAddTodo={todos.createTodo} />
-                <TodoList items={list} toggleComplete={todos.toggleComplete} />
+                <button type="button" className="collapsible" onClick={() => todos.addList([])}>
+                  Create new list
+                </button>
+                {
+                  lists.map((list, index) => {
+                    return <TodoLists index={index} items={list} toggleComplete={todos.toggleComplete} createTodo={todos.createTodo}/>;
+                  })
+                }
               </TodosWrapper>
             )
           }}
